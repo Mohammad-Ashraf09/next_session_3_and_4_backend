@@ -7,8 +7,11 @@ const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');
 
+const authRoute = require('./router/Auth');
+const userRoute = require('./router/Users');
 const blogRoute = require('./router/Blogs');
 const { DATABASE } = require('./config/keys');
+const { authenticateToken } = require('./middlewares');
 
 dotenv.config();
 
@@ -28,7 +31,9 @@ app.use(helmet());
 app.use(morgan('common'));
 
 // routes
-app.use('/api/blogs', blogRoute);
+app.use('/api/auth', authRoute);
+app.use('/api/users', authenticateToken(), userRoute);
+app.use('/api/blogs', authenticateToken(), blogRoute);
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('build'));
