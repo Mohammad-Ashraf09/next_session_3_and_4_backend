@@ -36,8 +36,8 @@ router.get('/:id', async (req, res) => {
 //delete a particular blog
 router.delete('/delete/:id', async (req, res) => {
     try {
-        await Blog.findByIdAndDelete(req.params.id);
-        res.status(200).json('Blog deleted');
+        const deletedBlog = await Blog.findByIdAndDelete(req.params.id);
+        res.status(200).json(deletedBlog);
     } catch (err) {
         return res.status(500).json(err);
     }
