@@ -32,15 +32,17 @@ router.post('/login', async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     !user && res.status(404).json('user not found');
 
-    const { password, updatedAt, __v, ...other } = user._doc;
-    const validPassword = await bcrypt.compare(req.body.password, password);
-    if (validPassword) {
-        const accessToken = jwt.sign({ email: user.email }, process.env.ACCESS_TOKEN_SECRET, {
-            expiresIn: '1h',
-        });
-        res.json({ accessToken, other }); // here from user only passings keys except 'password', 'updatedAt' and '__v'
-    } else {
-        res.status(400).json('wrong password');
+    if (user) {
+        const { password, updatedAt, __v, ...other } = user._doc;
+        const validPassword = await bcrypt.compare(req.body.password, password);
+        if (validPassword) {
+            const accessToken = jwt.sign({ email: user.email }, process.env.ACCESS_TOKEN_SECRET, {
+                expiresIn: '1h',
+            });
+            res.json({ accessToken, other }); // here from user only passings keys except 'password', 'updatedAt' and '__v'
+        } else {
+            res.status(400).json('wrong password');
+        }
     }
 });
 
