@@ -8,6 +8,7 @@ const cors = require('cors');
 const path = require('path');
 
 const authRoute = require('./router/Auth');
+const encryptionRoute = require('./router/Encryption');
 const userRoute = require('./router/Users');
 const blogRoute = require('./router/Blogs');
 const { DATABASE } = require('./config/keys');
@@ -32,6 +33,7 @@ app.use(morgan('common'));
 
 // routes
 app.use('/api/auth', authRoute);
+app.use('/api/enc', authenticateToken(), encryptionRoute);
 app.use('/api/users', authenticateToken(), userRoute);
 app.use('/api/blogs', authenticateToken(), blogRoute);
 

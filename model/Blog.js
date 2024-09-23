@@ -2,9 +2,17 @@ const mongoose = require('mongoose');
 
 const BlogSchema = new mongoose.Schema(
     {
-        author: {
+        authorId: {
             type: String,
             required: true,
+        },
+        authorName: {
+            type: String,
+            required: true,
+        },
+        authorDP: {
+            type: String,
+            default: '',
         },
         title: {
             type: String,
@@ -13,6 +21,10 @@ const BlogSchema = new mongoose.Schema(
         content: {
             type: String,
             required: true,
+        },
+        category: {
+            type: String,
+            default: 'other',
         },
     },
     { timestamps: true }
